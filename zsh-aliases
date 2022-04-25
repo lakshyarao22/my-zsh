@@ -1,0 +1,117 @@
+#!/bin/sh
+alias zsh-update-plugins="find "$ZDOTDIR/plugins" -type d -exec test -e '{}/.git' ';' -print0 | xargs -I {} -0 git -C {} pull -q"
+
+
+# Auto StartX
+if [ -z "${DISPLAY}" ]&&[ "${XDG_VTNR}" -eq 1 ] ; then
+	exec startx -- vt1 &> /dev/null ;
+fi
+
+#Aliases
+alias sudo="doas --"
+alias la="ls -lA --color=always --group-directories-first --sort=extension"
+alias cd=changeDirectory; function changeDirectory { cd $1 ; la }
+alias lo="ls -lA --color=always --sort=size"
+alias l="ls -l --color=always --group-directories-first --sort=extension"
+alias cat="bat"
+alias shutdown="shutdown -h now"
+alias host="sudo mv /etc/hosts /etc/hosts.bak || sudo mv /etc/hosts.bak /etc/hosts"
+alias mpv="devour mpv"
+alias n="nvim"
+alias clearCache="rm -rf ~/.cache/*"
+
+# Package Management
+alias ins="doas pacman -S"
+alias rem="doas pacman -R"
+alias up="yay -Syyu"
+alias orphan="sudo pacman -Rns $(sudo pacman -Qtdq)"
+
+# Easy access to configs
+alias zshrc="'cd' ~/.config/zsh/ && nvim ."
+alias dwmrc="'cd' ~/.local/src/dwm && nvim ."
+alias sxrc="nvim ~/.config/sxhkd/sxhkdrc"
+alias nvimrc="'cd' ~/.config/nvim/ && nvim ."
+alias xrc="nvim ~/.local/bin/autostart"
+
+# Clean Up
+alias arduino-cli="arduino-cli --config-file $XDG_CONFIG_HOME/arduino15/arduino-cli.yaml"
+
+# Esp32 esp32doit-devkit-v1 
+alias esp-compile="arduino-cli compile --fqbn esp32:esp32:esp32doit-devkit-v1 ."
+alias esp-upload="sudo chmod 777 /dev/ttyUSB0 && arduino-cli upload -p /dev/ttyUSB0 --fqbn esp32:esp32:esp32doit-devkit-v1 ."
+
+# Esp32 nodemcu
+alias nodemcu-compile="arduino-cli compile --fqbn esp32:esp32:nodemcu-32s ."
+alias nodemcu-upload="sudo chmod 777 /dev/ttyUSB0 && arduino-cli upload -p /dev/ttyUSB0 --fqbn esp32:esp32:nodemcu-32s ."
+
+### Function extract for common file formats ###
+SAVEIFS=$IFS
+IFS=$(echo -en "\n\b")
+
+function extract {
+ if [ -z "$1" ]; then
+    # display usage if no parameters given
+    echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
+    echo "       extract <path/file_name_1.ext> [path/file_name_2.ext] [path/file_name_3.ext]"
+ else
+    for n in "$@"
+    do
+      if [ -f "$n" ] ; then
+          case "${n%,}" in
+            *.cbt|*.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar)
+                         tar xvf "$n"       ;;
+            *.lzma)      unlzma ./"$n"      ;;
+            *.bz2)       bunzip2 ./"$n"     ;;
+            *.cbr|*.rar)       unrar x -ad ./"$n" ;;
+            *.gz)        gunzip ./"$n"      ;;
+            *.cbz|*.epub|*.zip)       unzip ./"$n"       ;;
+            *.z)         uncompress ./"$n"  ;;
+            *.7z|*.arj|*.cab|*.cb7|*.chm|*.deb|*.dmg|*.iso|*.lzh|*.msi|*.pkg|*.rpm|*.udf|*.wim|*.xar)
+                         7z x ./"$n"        ;;
+            *.xz)        unxz ./"$n"        ;;
+            *.exe)       cabextract ./"$n"  ;;
+            *.cpio)      cpio -id < ./"$n"  ;;
+            *.cba|*.ace)      unace x ./"$n"      ;;
+            *)
+                         echo "extract: '$n' - unknown archive method"
+                         return 1
+                         ;;
+          esac
+      else
+          echo "'$n' - file does not exist"
+          return 1
+      fi
+    done
+fi
+}
+
+IFS=$SAVEIFS
+
+# Colorize grep output (good for log files)
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# confirm before overwriting something
+alias cp="cp -i"
+alias mv='mv -i'
+
+# easier to read disk
+alias df='df -h'     # human-readable sizes
+alias free='free -m' # show sizes in MB
+
+# get top process eating memory
+alias psmem='ps auxf | sort -nr -k 4 | head -5'
+
+# get top process eating cpu ##
+alias pscpu='ps auxf | sort -nr -k 3 | head -5'
+
+# gpg encryption
+# verify signature for isos
+alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"
+# receive the key of a developer
+alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
+
+# For when keys break
+alias archlinux-fix-keys="sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys"
+
