@@ -33,6 +33,11 @@ alias sxrc="nvim ~/.config/sxhkd/sxhkdrc"
 alias nvimrc="'cd' ~/.config/nvim/ && nvim ."
 alias xrc="nvim ~/.local/bin/autostart"
 
+# read write and execute
+
+alias 777="sudo chmod 777"
+
+
 # Clean Up
 alias arduino-cli="arduino-cli --config-file $XDG_CONFIG_HOME/arduino15/arduino-cli.yaml"
 
