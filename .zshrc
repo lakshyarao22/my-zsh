@@ -86,6 +86,5 @@ setxkbmap -option caps:escape
 # swap escape and caps
 # setxkbmap -option caps:swapescape
 echo -e ""
-pfetch
 echo -e '\e[1;31m TODO: \e[0m'
 "cat" ~/.config/Todo/TodoList
