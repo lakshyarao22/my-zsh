@@ -71,7 +71,10 @@ autoload edit-command-line; zle -N edit-command-line
 # bindkey '^e' edit-command-line
 
 # Speedy keys
+if command -v xset &> /dev/null
+then
 xset r rate 200 30
+fi
 
 # Environment variables set everywhere
 export EDITOR="nvim"
@@ -82,9 +85,15 @@ export BROWSER="google-chrome"
 export QT_QPA_PLATFORMTHEME=qt5ct
 
 # remap caps to escape
+if command -v setxkbmap &> /dev/null
+then
 setxkbmap -option caps:escape
 # swap escape and caps
 # setxkbmap -option caps:swapescape
+fi
+if type todo &> /dev/null
+then
 echo -e ""
 echo -e '\e[1;31m TODO: \e[0m'
 "cat" ~/.config/Todo/TodoList
+fi

@@ -8,24 +8,41 @@ if [ -z "${DISPLAY}" ]&&[ "${XDG_VTNR}" -eq 1 ] ; then
 fi
 
 #Aliases
+if command -v doas &> /dev/null
+then
 alias sudo="doas --"
+fi
 alias la="ls -lA --color=always --group-directories-first --sort=extension"
 alias cd=changeDirectory; function changeDirectory { cd $1 ; la }
 alias lo="ls -lA --color=always --sort=size"
 alias l="ls -l --color=always --group-directories-first --sort=extension"
+if command -v bat &> /dev/null
+then
 alias cat="bat"
+fi
 alias shutdown="shutdown -h now"
 alias host="sudo mv /etc/hosts /etc/hosts.bak || sudo mv /etc/hosts.bak /etc/hosts"
+if command -v devour  &> /dev/null
+then
 alias mpv="devour mpv"
+fi
 alias n="nvim"
 alias clearCache="rm -rf ~/.cache/*"
 
 # Package Management
-alias ins="doas pacman -S"
-alias rem="doas pacman -R"
-alias up="yay -Syyu"
+if command -v pacman &> /dev/null
+then
+alias ins="sudo pacman -S"
+alias rem="sudo pacman -R"
 alias orphan="sudo pacman -Rns $(sudo pacman -Qtdq)"
+# For when keys break
+alias archlinux-fix-keys="sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys"
+fi
 
+if command -v pacman &> /dev/null
+then
+alias up="yay -Syyu"
+fi
 # Easy access to configs
 alias zshrc="'cd' ~/.config/zsh/ && nvim ."
 alias dwmrc="'cd' ~/.local/src/dwm && nvim ."
@@ -117,6 +134,4 @@ alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify"
 # receive the key of a developer
 alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys"
 
-# For when keys break
-alias archlinux-fix-keys="sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --refresh-keys"
 

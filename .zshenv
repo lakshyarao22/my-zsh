@@ -28,4 +28,7 @@ export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 
 # LS Colors
+if command -v vivid &> /dev/null
+then
 export LS_COLORS="$(vivid generate snazzy)"
+fi
