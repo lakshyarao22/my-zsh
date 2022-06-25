@@ -16,4 +16,10 @@ if [ -d "$HOME/Apps" ] ;
   then PATH="$HOME/Apps:$PATH"
 fi
 
+if [ -d "$HOME/.local/share/applications" ] ;
+  then PATH="$HOME/.local/share/applications:$PATH"
+fi
 
+if [ -d "$HOME/snap/flutter/common/flutter/bin" ] ;
+  then PATH="$HOME/snap/flutter/common/flutter/bin:$PATH"
+fi

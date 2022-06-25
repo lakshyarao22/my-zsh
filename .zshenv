@@ -26,6 +26,9 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export WINEPREFIX="$XDG_DATA_HOME"/wineprefixes/default
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export DIFFPROG="nvim -d"
+#export ANDROID_HOME=/usr/bin/
+export CHROME_EXECUTABLE="/usr/bin/google-chrome-stable"
 
 # LS Colors
 if command -v vivid &> /dev/null
